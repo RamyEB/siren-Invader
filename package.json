@@ -1,0 +1,16 @@
+{
+  "name": "siren-invader",
+  "version": "1.0.0",
+  "devDependencies": {
+    "jest": "^27.3.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "mongodb": "^4.1.2",
+    "mongoose": "^6.0.11"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  }
+}
