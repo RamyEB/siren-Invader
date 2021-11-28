@@ -1,2 +1,12 @@
 /node_modules
 /.DS_Store
+StockEtablissement_utf8.csv
+.gitignore
+StockEtablissement_utf8.zip
+/sirenExample.csv
+sirenExample.csv
+sirenLittleExample.csv
+sirenMedExemple.csv
+./sirenExample.csv
+nb.csv
+./.gitignore
