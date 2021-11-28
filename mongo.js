@@ -20,14 +20,6 @@ class ConnectionDB {
     return this.client.connect()
   }
 
-   insertOneIntoDB = (data) => {
-    return this.db.collection(this.collection).insertOne(data)
-  }
-
-  insertManyIntoDb = (data) => {
-    return this.db.collection(this.collection).insertMany(data)
-  }
-
   close = () => {
     this.client.close()
     .then(()=>{

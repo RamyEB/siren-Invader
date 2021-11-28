@@ -1,6 +1,5 @@
 const fs = require('fs');
 
-
 function readBytes(fd, start, sizeBytes, sharedBuffer) {
     return new Promise((resolve, reject) => {
         fs.read(
@@ -62,7 +61,6 @@ async function generateChunks(filePath, size, processus) {
 
 
     const fd = fs.openSync(filePath);
-    let start = 0;
     let sizeBytes = sharedBuffer.length;
 
     let tableIndexOfStarts = []
@@ -87,30 +85,6 @@ async function generateChunks(filePath, size, processus) {
         readBytesAndCreateFile(fd, tableIndexOfStarts[i], sizeBytes, arrayOfBuffer, slots, i, stats.size, false, index);
         await checker(slots);
     }
-
-    /*
-    for(let i = 0; true; i++){
-        // percentage 
-        process.stdout.write(`${Number.parseFloat(start*100/stats.size).toPrecision(3)}%\r`)
-
-        //Read $fd from $start to $start + $sizeBytes (end) put data into $sharedBuffer
-        await readBytes(fd, start, sizeBytes, sharedBuffer);
-
-        start+= sharedBuffer.lastIndexOf('\n') + 1;
-
-        fileRef =  `./files/Lbl-CSV-GEN-${i+1}.csv`
-        fs.writeFile(`${fileRef}`, `${sharedBuffer.slice(0, sharedBuffer.lastIndexOf('\n'))}`, ()=>{})
-
-        // if last iteration
-        if ( stats.size < start+sizeBytes){
-            sizeBytes = stats.size - start;
-            await readBytes(fd, start, sizeBytes, sharedBuffer);
-            fileRef =  `./files/Lbl-CSV-GEN-${i+2}.csv`
-            fs.writeFile(`${fileRef}`, `${sharedBuffer.slice(0, sizeBytes)}`, ()=>{})
-            break;
-        }
-       
-    }*/
 }
 
 function sleep(ms) {
@@ -129,7 +103,6 @@ const checker = (tab) => {
     })
 }
 
-
 const main = async () => {
 
     /*
@@ -143,13 +116,13 @@ const main = async () => {
     //Timing counter
     console.time("Total program")
 
-    const filePath = './sirenLittleExample.csv'
+    const filePath = './StockEtablissement_utf8.csv'
     const stats = fs.statSync(filePath);
 
     //Buffer size (not nb files)
-    let size = Math.ceil(stats.size/100);
+    let size = Math.ceil(stats.size/600);
 
-    processus = 10;
+    const processus = 10;
 
     //division du fichier
     await generateChunks(filePath, size, processus).then(()=>{
