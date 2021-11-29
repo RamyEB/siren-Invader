@@ -2,6 +2,9 @@ const { ConnectionDB } = require('./mongo');
 const fs = require('fs');
 const {Worker} = require('worker_threads');
 const { resolve } = require('path');
+const { emitKeypressEvents } = require("readline");
+
+let paused = false
 
 function sleep(ms) {
     return new Promise((resolve) => {
@@ -9,9 +12,29 @@ function sleep(ms) {
     });
 }
 
+if (process.stdin.isTTY) {
+    emitKeypressEvents(process.stdin);
+    process.stdin.setRawMode(true);
+
+    process.stdin.on("keypress", (str, key) => {
+      if (key.ctrl) {
+        if (key.name === "p") {
+            paused = true
+          console.log("\nPause...");
+        } else if (key.name === "r") {
+            paused = false
+          console.log("\Resume...");
+        } else if (key.name === "c") {
+            process.exit()
+      }
+    }       
+    });
+  }
+  
+
 const checker = (tab) => {
     return new Promise(async (resolve) => {
-        while (!tab.tab.includes(true)){
+        while (!tab.tab.includes(true) || paused){
            await sleep(1)
         }
         resolve()
